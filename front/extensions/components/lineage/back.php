@@ -17,8 +17,17 @@ class com_lineage_back implements backend {
                         `game_login` VARCHAR( 36 ) NOT NULL ,
                         `ownerid` INT( 36 ) NOT NULL
                         ) ENGINE = MYISAM ;";
-        $stmt = $database->con()->exec($spec_table);
-        $stmt = null;
+        $database->con()->exec($spec_table);
+        $don_table = "CREATE TABLE IF NOT EXISTS `{$constant->db['prefix']}_com_lineage_donate` (
+                      `id` int(36) NOT NULL AUTO_INCREMENT,
+                      `server_id` int(12) NOT NULL,
+                      `char_name` varchar(36) NOT NULL,
+                      `count` int(12) NOT NULL,
+                      `time` int(16) NOT NULL,
+                      PRIMARY KEY (`id`),
+                      KEY `id` (`id`)
+                    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+        $database->con()->exec($don_table);
         $lang_front = array(
             'ru' => array(
                 'com_lineage_switch_title' => 'Выбор сервера',

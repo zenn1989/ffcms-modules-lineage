@@ -15,7 +15,7 @@ class hook_lineage_connector_back
         $stmt->bindParam(3, $enabled, PDO::PARAM_INT);
         $stmt->execute();
         $stmt = null;
-        $query_cache_table = "CREATE TABLE IF NOT EXISTS `{$constant->db['prefix']}_lineage_query` (
+        $query_cache_table = "CREATE TABLE IF NOT EXISTS `{$constant->db['prefix']}_hook_lineage_query` (
                                 `query` VARCHAR( 128 ) NOT NULL ,
                                 `server_id` INT( 12 ) NOT NULL ,
                                 `result` TEXT NOT NULL ,

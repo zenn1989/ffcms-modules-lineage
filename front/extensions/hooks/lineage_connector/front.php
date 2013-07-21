@@ -38,7 +38,7 @@ class hook_lineage_connector_front implements hook_front
         $cache_allowed = $this->allowToCache($array_data['action']);
         if(sizeof($cache_allowed) > 0) {
             $queryList = $system->DbPrepareListdata($cache_allowed);
-            $stmt = $database->con()->prepare("SELECT * FROM `{$constant->db['prefix']}_lineage_query` WHERE `query` in($queryList) AND `server_id` = ? AND `time` >= ?");
+            $stmt = $database->con()->prepare("SELECT * FROM `{$constant->db['prefix']}_hook_lineage_query` WHERE `query` in($queryList) AND `server_id` = ? AND `time` >= ?");
             $stmt->bindParam(1, $index, PDO::PARAM_INT);
             $stmt->bindParam(2, $time_cache_sql, PDO::PARAM_INT);
             $stmt->execute();
@@ -81,7 +81,7 @@ class hook_lineage_connector_front implements hook_front
         foreach($response as $query=>$value) {
             if($this->allowedQueryCache($query)) {
                 $tosave_value = serialize($value);
-                $stmt = $database->con()->prepare("SELECT COUNT(*) FROM {$constant->db['prefix']}_lineage_query WHERE query = ? AND server_id = ?");
+                $stmt = $database->con()->prepare("SELECT COUNT(*) FROM {$constant->db['prefix']}_hook_lineage_query WHERE query = ? AND server_id = ?");
                 $stmt->bindParam(1, $query, PDO::PARAM_STR);
                 $stmt->bindParam(2, $index, PDO::PARAM_INT);
                 $stmt->execute();
@@ -89,7 +89,7 @@ class hook_lineage_connector_front implements hook_front
                 $count = $res[0];
                 $stmt = null;
                 if($count > 0) {
-                    $stmt = $database->con()->prepare("UPDATE {$constant->db['prefix']}_lineage_query SET `result` = ?, `time` = ? WHERE `query` = ? AND `server_id` = ?");
+                    $stmt = $database->con()->prepare("UPDATE {$constant->db['prefix']}_hook_lineage_query SET `result` = ?, `time` = ? WHERE `query` = ? AND `server_id` = ?");
                     $stmt->bindParam(1, $tosave_value, PDO::PARAM_STR);
                     $stmt->bindParam(2, $time, PDO::PARAM_INT);
                     $stmt->bindParam(3, $query, PDO::PARAM_STR);
@@ -97,7 +97,7 @@ class hook_lineage_connector_front implements hook_front
                     $stmt->execute();
                     $stmt = null;
                 } else {
-                    $stmt = $database->con()->prepare("INSERT INTO {$constant->db['prefix']}_lineage_query (`query`, `server_id`, `result`, `time`) VALUES (?, ?, ?, ?)");
+                    $stmt = $database->con()->prepare("INSERT INTO {$constant->db['prefix']}_hook_lineage_query (`query`, `server_id`, `result`, `time`) VALUES (?, ?, ?, ?)");
                     $stmt->bindParam(1, $query, PDO::PARAM_STR);
                     $stmt->bindParam(2, $index, PDO::PARAM_INT);
                     $stmt->bindParam(3, $tosave_value, PDO::PARAM_STR);
